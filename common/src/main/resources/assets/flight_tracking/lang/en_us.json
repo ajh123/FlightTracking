@@ -10,5 +10,7 @@
   "screen.flight_tracking.no_tracking_url": "No tracking URL assigned",
   "screen.flight_tracking.no_tracking_state.title": "Tracking is not initialized",
   "screen.flight_tracking.no_tracking_state.body": "Server did not assign a tracking URL.\nPlease contact your server administrator.",
+  "screen.flight_tracking.websocket_error.title": "WebSocket error occurred",
+  "screen.flight_tracking.websocket_error.body": "%s",
   "category.flight_tracking": "Flight Tracking"
 }

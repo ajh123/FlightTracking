@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Component;
 
 public class PilotScreen extends Screen {
     public static final SystemToast.SystemToastId NO_TRACKING_STATE = new SystemToast.SystemToastId();
+    public static final SystemToast.SystemToastId WEBSOCKET_ERROR = new SystemToast.SystemToastId();
 
     public static void onNoTrackingState(Minecraft minecraft) {
         SystemToast systemToast = SystemToast.multiline(
@@ -19,6 +20,16 @@ public class PilotScreen extends Screen {
                 NO_TRACKING_STATE,
                 Component.translatable("screen.flight_tracking.no_tracking_state.title").withStyle(ChatFormatting.RED),
                 Component.translatable("screen.flight_tracking.no_tracking_state.body")
+        );
+        minecraft.getToasts().addToast(systemToast);
+    }
+
+    public static void onWebSocketError(Minecraft minecraft, String errorMessage) {
+        SystemToast systemToast = SystemToast.multiline(
+                minecraft,
+                WEBSOCKET_ERROR,
+                Component.translatable("screen.flight_tracking.websocket_error.title").withStyle(ChatFormatting.RED),
+                Component.translatable("screen.flight_tracking.websocket_error.body", errorMessage)
         );
         minecraft.getToasts().addToast(systemToast);
     }
@@ -48,12 +59,14 @@ public class PilotScreen extends Screen {
         startButton = Button.builder(Component.translatable("screen.flight_tracking.start_flight"), (btn) -> {
             if (!state.isInFlight()) {
                 state.setInFlight(true);
+                state.startWebSocket();
             }
         }).bounds(centerX - buttonWidth - spacing / 2, buttonY, buttonWidth, buttonHeight).build();
 
         stopButton = Button.builder(Component.translatable("screen.flight_tracking.stop_flight"), (btn) -> {
             if (state.isInFlight()) {
                 state.setInFlight(false);
+                state.stopWebSocket();
             }
         }).bounds(centerX + spacing / 2, buttonY, buttonWidth, buttonHeight).build();
 

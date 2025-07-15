@@ -1,9 +1,14 @@
 package me.ajh123.flight_tracking.data;
 
+import me.ajh123.flight_tracking.networking.TrackingWebSocket;
+
+import java.net.URI;
+
 public class TrackingState {
     private String trackingURL;
     private boolean inFlight;
     private String callsign;
+    private TrackingWebSocket webSocket;
 
     public String getTrackingURL() {
         return trackingURL;
@@ -27,5 +32,20 @@ public class TrackingState {
 
     public void setCallsign(String callsign) {
         this.callsign = callsign;
+    }
+
+    public void startWebSocket() {
+        if (webSocket != null) {
+            webSocket.close();
+        }
+        webSocket = new TrackingWebSocket(URI.create(trackingURL));
+        webSocket.connect();
+    }
+
+    public void stopWebSocket() {
+        if (webSocket != null) {
+            webSocket.close();
+            webSocket = null;
+        }
     }
 }

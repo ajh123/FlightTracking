@@ -38,6 +38,9 @@ public final class FlightTrackingClient {
         );
 
         ClientPlayerEvent.CLIENT_PLAYER_QUIT.register((player -> {
+            if (state != null) {
+                state.stopWebSocket();
+            }
             state = null; // Clear the tracking state when the player quits
         }));
 
