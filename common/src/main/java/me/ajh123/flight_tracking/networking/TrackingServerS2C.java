@@ -1,4 +1,4 @@
-package me.ajh123.flight_tracking.payloads;
+package me.ajh123.flight_tracking.networking;
 
 import io.netty.buffer.ByteBuf;
 import me.ajh123.flight_tracking.MinecraftUtils;

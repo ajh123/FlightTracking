@@ -4,7 +4,7 @@ import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.networking.NetworkManager;
 import me.ajh123.flight_tracking.data.ServerConfig;
-import me.ajh123.flight_tracking.payloads.TrackingServerS2C;
+import me.ajh123.flight_tracking.networking.TrackingServerS2C;
 
 import java.nio.file.Path;
 

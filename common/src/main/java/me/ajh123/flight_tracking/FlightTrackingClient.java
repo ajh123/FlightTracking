@@ -6,7 +6,7 @@ import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import me.ajh123.flight_tracking.data.TrackingState;
-import me.ajh123.flight_tracking.payloads.TrackingServerS2C;
+import me.ajh123.flight_tracking.networking.TrackingServerS2C;
 import me.ajh123.flight_tracking.screens.PilotScreen;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.ResourceLocation;
