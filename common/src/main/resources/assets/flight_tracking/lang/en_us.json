@@ -1,0 +1,12 @@
+{
+  "key.flight_tracking.pilot_menu": "Open the Pilot Menu",
+  "screen.flight_tracking.pilot_menu.title": "Pilot Menu",
+  "screen.flight_tracking.start_flight": "Start Flight",
+  "screen.flight_tracking.stop_flight": "Stop Flight",
+  "screen.flight_tracking.status.in_flight": "Status: In Flight",
+  "screen.flight_tracking.status.idle": "Status: Idle",
+  "screen.flight_tracking.callsign_box": "Enter Callsign",
+  "screen.flight_tracking.tracking_url": "Server assigned tracking URL: %s",
+  "screen.flight_tracking.no_tracking_url": "No tracking URL assigned",
+  "category.flight_tracking": "Flight Tracking"
+}

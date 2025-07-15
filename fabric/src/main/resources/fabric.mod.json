@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "flight_tracking",
+  "version": "${version}",
+  "name": "FlightTracking",
+  "description": "Flight Tracking for Minecraft",
+  "authors": [
+    "ajh123"
+  ],
+  "contact": {
+    "homepage": "https://github.com/ajh123/FlightTracking"
+  },
+  "license": "GPL-3.0",
+  "icon": "assets/flight_tracking/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "me.ajh123.flight_tracking.fabric.FlightTrackingFabric"
+    ],
+    "client": [
+      "me.ajh123.flight_tracking.fabric.client.FlightTrackingFabricClient"
+    ]
+  },
+  "mixins": [
+    "flight_tracking.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.14",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "architectury": ">=13.0.8",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
