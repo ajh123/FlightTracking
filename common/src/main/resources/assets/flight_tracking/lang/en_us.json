@@ -8,5 +8,7 @@
   "screen.flight_tracking.callsign_box": "Enter Callsign",
   "screen.flight_tracking.tracking_url": "Server assigned tracking URL: %s",
   "screen.flight_tracking.no_tracking_url": "No tracking URL assigned",
+  "screen.flight_tracking.no_tracking_state.title": "Tracking is not initialized",
+  "screen.flight_tracking.no_tracking_state.body": "Server did not assign a tracking URL.\nPlease contact your server administrator.",
   "category.flight_tracking": "Flight Tracking"
 }

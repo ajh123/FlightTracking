@@ -1,23 +1,37 @@
 package me.ajh123.flight_tracking;
 
+import me.ajh123.flight_tracking.data.TrackingState;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.Nullable;
 
 public class PilotScreen extends Screen {
-    public static @Nullable String trackingURL = null;
+    public static final SystemToast.SystemToastId NO_TRACKING_STATE = new SystemToast.SystemToastId();
 
-    private boolean inFlight = false;
+    public static void onNoTrackingState(Minecraft minecraft) {
+        SystemToast systemToast = SystemToast.multiline(
+                minecraft,
+                NO_TRACKING_STATE,
+                Component.translatable("screen.flight_tracking.no_tracking_state.title").withStyle(ChatFormatting.RED),
+                Component.translatable("screen.flight_tracking.no_tracking_state.body")
+        );
+        minecraft.getToasts().addToast(systemToast);
+    }
+
+    private final TrackingState state;
 
     private Button startButton;
     private Button stopButton;
     private EditBox callsignInput;
 
-    protected PilotScreen() {
+    protected PilotScreen(TrackingState state) {
         super(Component.translatable("screen.flight_tracking.pilot_menu.title"));
+        this.state = state;
     }
 
     @Override
@@ -32,16 +46,14 @@ public class PilotScreen extends Screen {
         int buttonY = titleY + 30 + spacing;
 
         startButton = Button.builder(Component.translatable("screen.flight_tracking.start_flight"), (btn) -> {
-            if (!inFlight) {
-                inFlight = true;
-                // TODO: Start tracking
+            if (!state.isInFlight()) {
+                state.setInFlight(true);
             }
         }).bounds(centerX - buttonWidth - spacing / 2, buttonY, buttonWidth, buttonHeight).build();
 
         stopButton = Button.builder(Component.translatable("screen.flight_tracking.stop_flight"), (btn) -> {
-            if (inFlight) {
-                inFlight = false;
-                // TODO: Stop tracking
+            if (state.isInFlight()) {
+                state.setInFlight(false);
             }
         }).bounds(centerX + spacing / 2, buttonY, buttonWidth, buttonHeight).build();
 
@@ -53,6 +65,7 @@ public class PilotScreen extends Screen {
 
         callsignInput = new EditBox(this.font, inputX, inputY, inputWidth, buttonHeight,
                 Component.translatable("screen.flight_tracking.callsign_box"));
+        callsignInput.setValue(state.getCallsign() != null ? state.getCallsign() : "");
 
         // Add widgets
         this.addRenderableWidget(startButton);
@@ -69,8 +82,8 @@ public class PilotScreen extends Screen {
         guiGraphics.drawCenteredString(this.font, this.title, this.width / 2, 20, 0xFFFFFF);
 
         // Tracking URL
-        if (trackingURL != null) {
-            Component urlText = Component.translatable("screen.flight_tracking.tracking_url", trackingURL);
+        if (state.getTrackingURL() != null) {
+            Component urlText = Component.translatable("screen.flight_tracking.tracking_url", state.getTrackingURL());
             guiGraphics.drawCenteredString(this.font, urlText, this.width / 2, 40, 0xFFFFFF);
         } else {
             Component noUrlText = Component.translatable("screen.flight_tracking.no_tracking_url");
@@ -78,11 +91,11 @@ public class PilotScreen extends Screen {
         }
 
         // Status
-        Component statusText = inFlight
+        Component statusText = state.isInFlight()
                 ? Component.translatable("screen.flight_tracking.status.in_flight")
                 : Component.translatable("screen.flight_tracking.status.idle");
 
-        int statusColor = inFlight ? 0x00FF00 : 0xFF5555;
+        int statusColor = state.isInFlight() ? 0x00FF00 : 0xFF5555;
         int statusY = startButton.getY() + startButton.getHeight() + 10;
         guiGraphics.drawCenteredString(this.font, statusText, this.width / 2, statusY, statusColor);
 
@@ -95,8 +108,11 @@ public class PilotScreen extends Screen {
             startButton.active = false;
             stopButton.active = false;
         } else {
-            startButton.active = !inFlight;
-            stopButton.active = inFlight;
+            startButton.active = !state.isInFlight();
+            stopButton.active = state.isInFlight();
+            state.setCallsign(callsignInput.getValue());
         }
+
+        callsignInput.setEditable(!state.isInFlight());
     }
 }

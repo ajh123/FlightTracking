@@ -1,17 +1,21 @@
 package me.ajh123.flight_tracking;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import dev.architectury.event.events.client.ClientPlayerEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
+import me.ajh123.flight_tracking.data.TrackingState;
 import me.ajh123.flight_tracking.payloads.TrackingServerS2C;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import org.jetbrains.annotations.Nullable;
 
 public final class FlightTracking {
     public static final String MOD_ID = "flight_tracking";
+    public static @Nullable TrackingState state = null;
 
     public static final KeyMapping PILOT_MENU = new KeyMapping(
             "key.flight_tracking.pilot_menu", // The translation key of the name shown in the Controls screen
@@ -33,9 +37,8 @@ public final class FlightTracking {
                 TrackingServerS2C.TYPE,
                 TrackingServerS2C.STREAM_CODEC,
                 (payload, context) -> {
-                    // Handle the received payload here
-                    // For example, you might want to log the URL or perform some action with it
-                    PilotScreen.trackingURL = payload.URL();
+                    state = new TrackingState();
+                    state.setTrackingURL(payload.URL());
                 }
         );
 
@@ -45,10 +48,18 @@ public final class FlightTracking {
             NetworkManager.sendToPlayer(player, payload);
         });
 
+        ClientPlayerEvent.CLIENT_PLAYER_QUIT.register((player -> {
+            state = null; // Clear the tracking state when the player quits
+        }));
+
         ClientTickEvent.CLIENT_POST.register(minecraft -> {
             while (PILOT_MENU.consumeClick()) {
                 if (minecraft.screen == null) {
-                    minecraft.setScreen(new PilotScreen());
+                    if (state == null) {
+                        PilotScreen.onNoTrackingState(minecraft);
+                    } else {
+                        minecraft.setScreen(new PilotScreen(state));
+                    }
                 }
             }
             if (minecraft.player != null && minecraft.player.getVehicle() != null) {
