@@ -1,4 +1,4 @@
-package me.ajh123.flight_tracking;
+package me.ajh123.flight_tracking.screens;
 
 import me.ajh123.flight_tracking.data.TrackingState;
 import net.minecraft.ChatFormatting;
@@ -29,7 +29,7 @@ public class PilotScreen extends Screen {
     private Button stopButton;
     private EditBox callsignInput;
 
-    protected PilotScreen(TrackingState state) {
+    public PilotScreen(TrackingState state) {
         super(Component.translatable("screen.flight_tracking.pilot_menu.title"));
         this.state = state;
     }
