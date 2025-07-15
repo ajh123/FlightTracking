@@ -1,7 +1,7 @@
 package me.ajh123.flight_tracking.payloads;
 
 import io.netty.buffer.ByteBuf;
-import me.ajh123.flight_tracking.FlightTracking;
+import me.ajh123.flight_tracking.MinecraftUtils;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public record TrackingServerS2C(String URL) implements CustomPacketPayload {
-    public static final ResourceLocation ID = FlightTracking.location("tracking_server");
+    public static final ResourceLocation ID = MinecraftUtils.location("tracking_server");
     public static final CustomPacketPayload.Type<TrackingServerS2C> TYPE = new CustomPacketPayload.Type<>(ID);
 
     // Each pair of elements defines the stream codec of the element to encode/decode and the getter for the element to encode
