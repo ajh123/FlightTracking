@@ -73,12 +73,16 @@ public class PilotScreen extends Screen {
         // Row 3: Callsign input (under status)
         int inputWidth = 100;
         int statusY = startButton.getY() + startButton.getHeight() + 10;
-        int inputY = statusY + this.font.lineHeight + spacing * 2;
+        int inputY = statusY + spacing * 2;
         int inputX = centerX - inputWidth / 2;
 
         callsignInput = new EditBox(this.font, inputX, inputY, inputWidth, buttonHeight,
                 Component.translatable("screen.flight_tracking.callsign_box"));
         callsignInput.setValue(state.getCallsign() != null ? state.getCallsign() : "");
+        callsignInput.setHint(Component.translatable("screen.flight_tracking.callsign_box")
+                .withStyle(ChatFormatting.GRAY)
+                .withStyle(ChatFormatting.ITALIC)
+        );
 
         // Add widgets
         this.addRenderableWidget(startButton);
@@ -111,11 +115,6 @@ public class PilotScreen extends Screen {
         int statusColor = state.isInFlight() ? 0x00FF00 : 0xFF5555;
         int statusY = startButton.getY() + startButton.getHeight() + 10;
         guiGraphics.drawCenteredString(this.font, statusText, this.width / 2, statusY, statusColor);
-
-        // Callsign Label
-        Component callsignLabel = Component.translatable("screen.flight_tracking.callsign_box");
-        int labelY = callsignInput.getY() - this.font.lineHeight - 2;
-        guiGraphics.drawCenteredString(this.font, callsignLabel, this.width / 2, labelY, 0xFFFFFF);
 
         if (callsignInput.getValue().isEmpty()) {
             startButton.active = false;
